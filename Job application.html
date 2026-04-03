@@ -1,0 +1,1130 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Solicitud de Empleo</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #1a1a2e;
+    --ink-soft: #3d3d5c;
+    --gold: #c9952a;
+    --gold-light: #e8b84b;
+    --gold-pale: #fdf6e3;
+    --line: #d4c9a8;
+    --bg: #f9f6ef;
+    --white: #ffffff;
+    --section-bg: #1a1a2e;
+    --section-fg: #e8b84b;
+    --field-bg: #fdfaf4;
+    --shadow: 0 2px 12px rgba(26,26,46,0.08);
+    --radius: 4px;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--bg);
+    color: var(--ink);
+    min-height: 100vh;
+    padding: 40px 20px 60px;
+  }
+
+  .page {
+    max-width: 860px;
+    margin: 0 auto;
+    background: var(--white);
+    box-shadow: 0 8px 48px rgba(26,26,46,0.14);
+    border-radius: 2px;
+    overflow: hidden;
+  }
+
+  /* ── Header ── */
+  .header {
+    background: var(--section-bg);
+    padding: 36px 48px 28px;
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 24px;
+    align-items: start;
+  }
+  .header-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 13px;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 6px;
+  }
+  .header h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: 38px;
+    font-weight: 700;
+    color: var(--white);
+    line-height: 1;
+    letter-spacing: -0.5px;
+  }
+  .header h1 span { color: var(--gold-light); }
+  .header-note {
+    font-size: 11.5px;
+    color: rgba(255,255,255,0.45);
+    margin-top: 10px;
+    line-height: 1.6;
+    letter-spacing: 0.3px;
+  }
+  .header-meta {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    align-items: flex-end;
+  }
+  .meta-field {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 3px;
+  }
+  .meta-field label {
+    font-size: 9px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.35);
+  }
+  .meta-field input {
+    background: rgba(255,255,255,0.07);
+    border: 1px solid rgba(201,149,42,0.4);
+    border-radius: var(--radius);
+    color: var(--white);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 13px;
+    padding: 6px 10px;
+    width: 200px;
+    text-align: right;
+    outline: none;
+    transition: border-color .2s;
+  }
+  .meta-field input:focus { border-color: var(--gold-light); }
+  .photo-box {
+    width: 100px; height: 120px;
+    border: 1.5px dashed rgba(201,149,42,0.5);
+    border-radius: var(--radius);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    cursor: pointer;
+    transition: border-color .2s;
+    margin-top: 4px;
+  }
+  .photo-box:hover { border-color: var(--gold-light); }
+  .photo-box svg { opacity: .4; }
+  .photo-box span { font-size: 10px; color: rgba(255,255,255,0.35); letter-spacing: 1px; text-transform: uppercase; text-align:center; line-height:1.4;}
+  .photo-box img { width:100%; height:100%; object-fit:cover; border-radius:var(--radius); display:none; }
+
+  /* ── Body padding ── */
+  .body { padding: 0 48px 48px; }
+
+  /* ── Section header ── */
+  .section {
+    margin-top: 32px;
+  }
+  .section-head {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 20px;
+  }
+  .section-num {
+    font-family: 'Playfair Display', serif;
+    font-size: 11px;
+    color: var(--gold);
+    letter-spacing: 2px;
+    padding-top: 1px;
+  }
+  .section-title {
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 3.5px;
+    text-transform: uppercase;
+    color: var(--ink);
+    flex: 1;
+  }
+  .section-line {
+    height: 1px;
+    background: linear-gradient(to right, var(--line), transparent);
+    flex: 1;
+  }
+
+  /* ── Fields ── */
+  .grid { display: grid; gap: 16px 20px; }
+  .g2 { grid-template-columns: 1fr 1fr; }
+  .g3 { grid-template-columns: 1fr 1fr 1fr; }
+  .g4 { grid-template-columns: 1fr 1fr 1fr 1fr; }
+  .g1-2 { grid-template-columns: 1fr 2fr; }
+  .g2-1 { grid-template-columns: 2fr 1fr; }
+  .g1-1-2 { grid-template-columns: 1fr 1fr 2fr; }
+  .span2 { grid-column: span 2; }
+  .span3 { grid-column: span 3; }
+  .span4 { grid-column: span 4; }
+
+  .field { display: flex; flex-direction: column; gap: 5px; }
+  .field label {
+    font-size: 9.5px;
+    font-weight: 600;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+    opacity: .7;
+  }
+  .field input, .field select, .field textarea {
+    background: var(--field-bg);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    color: var(--ink);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 13.5px;
+    padding: 9px 12px;
+    outline: none;
+    transition: border-color .2s, box-shadow .2s;
+    width: 100%;
+  }
+  .field input:focus, .field select:focus, .field textarea:focus {
+    border-color: var(--gold);
+    box-shadow: 0 0 0 3px rgba(201,149,42,0.12);
+  }
+  .field textarea { resize: vertical; min-height: 72px; line-height: 1.6; }
+  .field select { cursor: pointer; appearance: none; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23c9952a' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 12px center; padding-right: 32px; }
+
+  /* ── Radio/Check group ── */
+  .radio-group, .check-group {
+    display: flex; gap: 16px; align-items: center; flex-wrap: wrap;
+    padding: 10px 12px;
+    background: var(--field-bg);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    min-height: 40px;
+  }
+  .radio-group label, .check-group label {
+    display: flex; align-items: center; gap: 6px;
+    font-size: 13px; font-weight: 400; letter-spacing: 0; text-transform: none; opacity: 1; cursor: pointer; color: var(--ink);
+  }
+  .radio-group input[type=radio], .check-group input[type=checkbox] {
+    width: 15px; height: 15px; accent-color: var(--gold); cursor: pointer; flex-shrink: 0;
+  }
+
+  /* ── Table ── */
+  .ftable { width: 100%; border-collapse: collapse; }
+  .ftable th {
+    font-size: 9.5px; font-weight: 600; letter-spacing: 2px; text-transform: uppercase;
+    color: var(--ink-soft); opacity: .7; padding: 0 8px 8px; text-align: left; border-bottom: 1px solid var(--line);
+  }
+  .ftable td { padding: 6px 8px; }
+  .ftable td input {
+    background: var(--field-bg); border: 1px solid var(--line); border-radius: var(--radius);
+    color: var(--ink); font-family: 'DM Sans', sans-serif; font-size: 13px;
+    padding: 7px 10px; outline: none; transition: border-color .2s; width: 100%;
+  }
+  .ftable td input:focus { border-color: var(--gold); box-shadow: 0 0 0 3px rgba(201,149,42,0.12); }
+  .ftable tr:nth-child(even) td input { background: #fcf8f0; }
+
+  /* ── Divider ── */
+  .divider { height: 1px; background: var(--line); margin: 8px 0; opacity: .5; }
+
+  /* ── Submit ── */
+  .footer {
+    background: var(--gold-pale);
+    border-top: 1px solid var(--line);
+    padding: 28px 48px;
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 24px;
+    align-items: end;
+  }
+  .legal {
+    font-size: 11px;
+    color: var(--ink-soft);
+    opacity: .7;
+    line-height: 1.7;
+    max-width: 480px;
+  }
+  .legal strong { color: var(--ink); }
+  .btn-submit {
+    background: var(--section-bg);
+    color: var(--gold-light);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 2.5px;
+    text-transform: uppercase;
+    border: none;
+    border-radius: var(--radius);
+    padding: 14px 32px;
+    cursor: pointer;
+    transition: background .2s, transform .1s;
+    white-space: nowrap;
+  }
+  .btn-submit:hover { background: #2a2a48; transform: translateY(-1px); }
+  .btn-submit:active { transform: translateY(0); }
+
+  /* ── Signature ── */
+  .sig-wrap { display: flex; flex-direction: column; gap: 5px; }
+  .sig-canvas-wrap {
+    background: var(--field-bg);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    overflow: hidden;
+    position: relative;
+    height: 80px;
+  }
+  canvas { display: block; cursor: crosshair; }
+  .sig-clear {
+    font-size: 10px; letter-spacing: 1.5px; text-transform: uppercase;
+    color: var(--gold); border: none; background: none; cursor: pointer;
+    padding: 0; font-family: 'DM Sans', sans-serif; font-weight: 600;
+    position: absolute; right: 8px; top: 8px; opacity: .6;
+    transition: opacity .2s;
+  }
+  .sig-clear:hover { opacity: 1; }
+
+  /* ── Inline notice ── */
+  .notice {
+    font-size: 11px;
+    color: var(--gold);
+    letter-spacing: .5px;
+    margin-top: -8px;
+    opacity: .8;
+  }
+
+  @media (max-width: 640px) {
+    .body, .header { padding-left: 22px; padding-right: 22px; }
+    .footer { padding-left: 22px; padding-right: 22px; grid-template-columns: 1fr; }
+    .g2, .g3, .g4, .g1-2, .g2-1, .g1-1-2 { grid-template-columns: 1fr; }
+    .span2, .span3, .span4 { grid-column: span 1; }
+    .header { grid-template-columns: 1fr; }
+    .header-meta { align-items: flex-start; }
+    .meta-field input { text-align: left; width: 100%; }
+  }
+
+  @media print {
+    body { background: white; padding: 0; }
+    .page { box-shadow: none; }
+    .btn-submit { display: none; }
+  }
+</style>
+</head>
+<body>
+<form class="page" id="solicitudForm" onsubmit="return false;">
+
+  <!-- ══ HEADER ══ -->
+  <div class="header">
+    <div>
+      <div class="header-title">Recursos Humanos</div>
+      <h1>SOLICITUD<br><span>de Empleo</span></h1>
+      <p class="header-note">Por favor llene esta solicitud de forma manuscrita o digital.<br>Toda información aquí proporcionada será tratada confidencialmente.</p>
+    </div>
+    <div class="header-meta">
+      <div class="meta-field">
+        <label>Fecha de Solicitud</label>
+        <input type="date" id="fechaSolicitud">
+      </div>
+      <div class="meta-field">
+        <label>Puesto que Solicita</label>
+        <input type="text" placeholder="Escribe el puesto">
+      </div>
+      <div class="meta-field">
+        <label>Sueldo Mensual Deseado</label>
+        <input type="text" placeholder="$ —">
+      </div>
+      <div class="meta-field">
+        <label>Sueldo Mensual Autorizado</label>
+        <input type="text" placeholder="$ —">
+      </div>
+      <div class="meta-field">
+        <label>Fecha de Contratación</label>
+        <input type="date">
+      </div>
+      <div class="photo-box" onclick="document.getElementById('photoInput').click()" title="Subir fotografía">
+        <input type="file" id="photoInput" accept="image/*" style="display:none" onchange="previewPhoto(event)">
+        <img id="photoPreview">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#e8b84b" stroke-width="1.5" stroke-linecap="round"><circle cx="12" cy="12" r="4"/><path d="M8.5 3h7l1.5 2H19a2 2 0 012 2v11a2 2 0 01-2 2H5a2 2 0 01-2-2V7a2 2 0 012-2h1.5L8.5 3z"/></svg>
+        <span id="photoLabel">Fotografía<br>Reciente</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="body">
+
+    <!-- ══ 1. DATOS PERSONALES ══ -->
+    <div class="section">
+      <div class="section-head">
+        <span class="section-num">01</span>
+        <span class="section-title">Datos Personales</span>
+        <div class="section-line"></div>
+      </div>
+
+      <div class="grid g3">
+        <div class="field">
+          <label>Apellido Paterno</label>
+          <input type="text" placeholder="Espinosa">
+        </div>
+        <div class="field">
+          <label>Apellido Materno</label>
+          <input type="text" placeholder="Espinosa">
+        </div>
+        <div class="field">
+          <label>Nombre(s)</label>
+          <input type="text" placeholder="Carlos Eduardo">
+        </div>
+        <div class="field">
+          <label>Edad</label>
+          <input type="number" placeholder="25">
+        </div>
+        <div class="field">
+          <label>Sexo</label>
+          <select>
+            <option value="">— Selecciona —</option>
+            <option>Masculino</option>
+            <option>Femenino</option>
+            <option>Otro</option>
+          </select>
+        </div>
+        <div class="field">
+          <label>Celular</label>
+          <input type="tel" placeholder="152 961 919 4533">
+        </div>
+        <div class="field span3">
+          <label>Domicilio (Calle y Número)</label>
+          <input type="text" placeholder="C. Sin Nombre S/N">
+        </div>
+        <div class="field">
+          <label>Colonia</label>
+          <input type="text" placeholder="B. Guadalupe">
+        </div>
+        <div class="field">
+          <label>Código Postal</label>
+          <input type="text" placeholder="30200">
+        </div>
+        <div class="field">
+          <label>Delegación / Municipio</label>
+          <input type="text" placeholder="">
+        </div>
+        <div class="field">
+          <label>Lugar de Nacimiento</label>
+          <input type="text" placeholder="Venustiano Carranza">
+        </div>
+        <div class="field">
+          <label>Estado</label>
+          <input type="text" placeholder="Chiapas">
+        </div>
+        <div class="field">
+          <label>Fecha de Nacimiento</label>
+          <input type="date">
+        </div>
+        <div class="field">
+          <label>E-mail</label>
+          <input type="email" placeholder="correo@ejemplo.com">
+        </div>
+        <div class="field">
+          <label>Nacionalidad</label>
+          <input type="text" placeholder="Mexicana">
+        </div>
+        <div class="field">
+          <label>Peso (kg)</label>
+          <input type="text" placeholder="54">
+        </div>
+        <div class="field">
+          <label>Estatura (cm)</label>
+          <input type="text" placeholder="159">
+        </div>
+      </div>
+
+      <div class="grid g2" style="margin-top:16px;">
+        <div class="field">
+          <label>Vive con</label>
+          <div class="radio-group">
+            <label><input type="radio" name="vivecon"> Sus Padres</label>
+            <label><input type="radio" name="vivecon"> Su Familia</label>
+            <label><input type="radio" name="vivecon"> Parientes</label>
+            <label><input type="radio" name="vivecon"> Solo</label>
+            <label><input type="radio" name="vivecon"> Otro</label>
+          </div>
+        </div>
+        <div class="field">
+          <label>Estado Civil</label>
+          <div class="radio-group">
+            <label><input type="radio" name="estadocivil"> Soltero(a)</label>
+            <label><input type="radio" name="estadocivil"> Casado(a)</label>
+            <label><input type="radio" name="estadocivil"> Otro</label>
+          </div>
+        </div>
+        <div class="field span2">
+          <label>Personas que Dependen de Usted</label>
+          <div class="radio-group">
+            <label><input type="checkbox"> Hijos</label>
+            <label><input type="checkbox"> Cónyuge</label>
+            <label><input type="checkbox"> Padres</label>
+            <label><input type="checkbox"> Nadie</label>
+            <label><input type="checkbox"> Otros</label>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══ 2. DOCUMENTACIÓN ══ -->
+    <div class="section">
+      <div class="section-head">
+        <span class="section-num">02</span>
+        <span class="section-title">Documentación</span>
+        <div class="section-line"></div>
+      </div>
+      <div class="grid g2">
+        <div class="field">
+          <label>CURP</label>
+          <input type="text" placeholder="EIEC000908HCSSRA8" maxlength="18" style="letter-spacing:2px;text-transform:uppercase;">
+        </div>
+        <div class="field">
+          <label>AFORE</label>
+          <input type="text" placeholder="SURA">
+        </div>
+        <div class="field">
+          <label>RFC</label>
+          <input type="text" placeholder="EIEC000908GC6" maxlength="13" style="letter-spacing:2px;text-transform:uppercase;">
+        </div>
+        <div class="field">
+          <label>Afiliación al Seguro Social (NSS)</label>
+          <input type="text" placeholder="24160062881">
+        </div>
+        <div class="field">
+          <label>Cartilla Servicio Militar</label>
+          <input type="text" placeholder="Número">
+        </div>
+        <div class="field">
+          <label>Pasaporte</label>
+          <input type="text" placeholder="Número">
+        </div>
+        <div class="field">
+          <label>Licencia de Manejo</label>
+          <div class="radio-group">
+            <label><input type="radio" name="licencia"> Sí</label>
+            <label><input type="radio" name="licencia" checked> No</label>
+          </div>
+        </div>
+        <div class="field">
+          <label>Clase y Número de Licencia</label>
+          <input type="text" placeholder="">
+        </div>
+        <div class="field span2">
+          <label>Siendo Extranjero: ¿Qué documentación le permite trabajar en el país?</label>
+          <input type="text" placeholder="">
+        </div>
+      </div>
+    </div>
+
+    <!-- ══ 3. SALUD Y HÁBITOS ══ -->
+    <div class="section">
+      <div class="section-head">
+        <span class="section-num">03</span>
+        <span class="section-title">Estado de Salud y Hábitos Personales</span>
+        <div class="section-line"></div>
+      </div>
+      <div class="grid g2">
+        <div class="field">
+          <label>Su estado de salud actual se considera</label>
+          <div class="radio-group">
+            <label><input type="radio" name="salud"> Bueno</label>
+            <label><input type="radio" name="salud"> Regular</label>
+            <label><input type="radio" name="salud"> Malo</label>
+          </div>
+        </div>
+        <div class="field">
+          <label>¿Padece alguna enfermedad crónica?</label>
+          <div class="radio-group">
+            <label><input type="radio" name="enfermedad"> No</label>
+            <label><input type="radio" name="enfermedad"> Sí</label>
+          </div>
+        </div>
+        <div class="field">
+          <label>Si respondió Sí, explique</label>
+          <input type="text" placeholder="">
+        </div>
+        <div class="field">
+          <label>¿Practica algún deporte?</label>
+          <input type="text" placeholder="">
+        </div>
+        <div class="field">
+          <label>¿Pertenece a algún club social o deportivo?</label>
+          <input type="text" placeholder="">
+        </div>
+        <div class="field">
+          <label>¿Cuál es su pasatiempo favorito?</label>
+          <input type="text" placeholder="Leer, entrenar...">
+        </div>
+        <div class="field span2">
+          <label>¿Cuál es su meta en la vida?</label>
+          <textarea placeholder="Crecer en el área de TI, sistemas y contribuir a manejar y mejorar la eficiencia de las empresas mediante soluciones tecnológicas."></textarea>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══ 4. DATOS FAMILIARES ══ -->
+    <div class="section">
+      <div class="section-head">
+        <span class="section-num">04</span>
+        <span class="section-title">Datos Familiares</span>
+        <div class="section-line"></div>
+      </div>
+      <table class="ftable">
+        <thead>
+          <tr>
+            <th>Parentesco</th>
+            <th>Nombre</th>
+            <th style="width:70px;">Vive</th>
+            <th>Domicilio</th>
+            <th>Ocupación</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><input type="text" value="Padre" style="font-weight:500;"></td>
+            <td><input type="text" placeholder=""></td>
+            <td><input type="text" placeholder="Sí/No"></td>
+            <td><input type="text" placeholder=""></td>
+            <td><input type="text" placeholder=""></td>
+          </tr>
+          <tr>
+            <td><input type="text" value="Madre" style="font-weight:500;"></td>
+            <td><input type="text" placeholder=""></td>
+            <td><input type="text" placeholder="Sí/No"></td>
+            <td><input type="text" placeholder=""></td>
+            <td><input type="text" placeholder=""></td>
+          </tr>
+          <tr>
+            <td><input type="text" value="Esposo(a)" style="font-weight:500;"></td>
+            <td><input type="text" placeholder=""></td>
+            <td><input type="text" placeholder="Sí/No"></td>
+            <td><input type="text" placeholder=""></td>
+            <td><input type="text" placeholder=""></td>
+          </tr>
+        </tbody>
+      </table>
+      <div class="field" style="margin-top:14px;">
+        <label>Nombres y edades de los hijos</label>
+        <input type="text" placeholder="">
+      </div>
+    </div>
+
+    <!-- ══ 5. ESCOLARIDAD ══ -->
+    <div class="section">
+      <div class="section-head">
+        <span class="section-num">05</span>
+        <span class="section-title">Escolaridad</span>
+        <div class="section-line"></div>
+      </div>
+      <table class="ftable">
+        <thead>
+          <tr>
+            <th>Nivel</th>
+            <th>Nombre de la Escuela</th>
+            <th>Domicilio</th>
+            <th style="width:70px;">De</th>
+            <th style="width:70px;">A</th>
+            <th style="width:55px;">Años</th>
+            <th>Título / Certificado</th>
+          </tr>
+        </thead>
+        <tbody id="escolaridadBody">
+          <tr>
+            <td><input type="text" value="Primaria" style="font-weight:500;"></td>
+            <td><input type="text" placeholder=""></td>
+            <td><input type="text" placeholder=""></td>
+            <td><input type="text" placeholder="2006"></td>
+            <td><input type="text" placeholder="2012"></td>
+            <td><input type="text" placeholder="6"></td>
+            <td><input type="text" placeholder="Certificado"></td>
+          </tr>
+          <tr>
+            <td><input type="text" value="Secundaria" style="font-weight:500;"></td>
+            <td><input type="text" placeholder=""></td>
+            <td><input type="text" placeholder=""></td>
+            <td><input type="text" placeholder="2012"></td>
+            <td><input type="text" placeholder="2015"></td>
+            <td><input type="text" placeholder="3"></td>
+            <td><input type="text" placeholder="Certificado"></td>
+          </tr>
+          <tr>
+            <td><input type="text" value="Preparatoria" style="font-weight:500;"></td>
+            <td><input type="text" placeholder=""></td>
+            <td><input type="text" placeholder=""></td>
+            <td><input type="text" placeholder="2016"></td>
+            <td><input type="text" placeholder="2019"></td>
+            <td><input type="text" placeholder="3"></td>
+            <td><input type="text" placeholder="Certificado"></td>
+          </tr>
+          <tr>
+            <td><input type="text" value="Profesional" style="font-weight:500;"></td>
+            <td><input type="text" placeholder=""></td>
+            <td><input type="text" placeholder=""></td>
+            <td><input type="text" placeholder="2020"></td>
+            <td><input type="text" placeholder="2023"></td>
+            <td><input type="text" placeholder="3"></td>
+            <td><input type="text" placeholder="Pendiente"></td>
+          </tr>
+        </tbody>
+      </table>
+      <div class="grid g3" style="margin-top:14px;">
+        <div class="field">
+          <label>Estudios que está efectuando actualmente</label>
+          <input type="text" placeholder="PT-B en Informática">
+        </div>
+        <div class="field">
+          <label>Escuela</label>
+          <input type="text" placeholder="Conalep">
+        </div>
+        <div class="field">
+          <label>Horario</label>
+          <input type="text" placeholder="7:06 – 14:00">
+        </div>
+        <div class="field span3">
+          <label>Curso o Carrera</label>
+          <input type="text" placeholder="PT-B en Informática Grado Cuarto">
+        </div>
+      </div>
+    </div>
+
+    <!-- ══ 6. CONOCIMIENTOS GENERALES ══ -->
+    <div class="section">
+      <div class="section-head">
+        <span class="section-num">06</span>
+        <span class="section-title">Conocimientos Generales</span>
+        <div class="section-line"></div>
+      </div>
+      <div class="grid g2">
+        <div class="field">
+          <label>Idiomas que domina / Nivel (%)</label>
+          <input type="text" placeholder="Español nativo — Inglés Nivel A2">
+        </div>
+        <div class="field">
+          <label>Funciones de oficina que domina</label>
+          <input type="text" placeholder="Gestión y organización de archivos">
+        </div>
+        <div class="field">
+          <label>Máquinas de oficina / taller que domina</label>
+          <input type="text" placeholder="Impresora, Escáner, Periféricos, etc.">
+        </div>
+        <div class="field">
+          <label>Software que domina / Nivel (%)</label>
+          <input type="text" placeholder="Administración, sistemas operativos, ofimática">
+        </div>
+        <div class="field span2">
+          <label>Otros trabajos o funciones que domina</label>
+          <textarea placeholder="Rápida adaptación a software administrativo (POS), organización y control de múltiples tareas, configurar y mantener software, protección y recuperación de información."></textarea>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══ 7. EMPLEO ACTUAL Y ANTERIORES ══ -->
+    <div class="section">
+      <div class="section-head">
+        <span class="section-num">07</span>
+        <span class="section-title">Empleo Actual y Anteriores</span>
+        <div class="section-line"></div>
+      </div>
+
+      <!-- Empleo 1 -->
+      <div style="background:var(--gold-pale);border:1px solid var(--line);border-radius:var(--radius);padding:16px 18px;margin-bottom:16px;">
+        <div style="font-size:9.5px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:var(--gold);margin-bottom:14px;">Empleo Actual o Último</div>
+        <div class="grid g3">
+          <div class="field span3">
+            <label>Nombre de la Compañía</label>
+            <input type="text" placeholder="">
+          </div>
+          <div class="field">
+            <label>Período: De</label>
+            <input type="date">
+          </div>
+          <div class="field">
+            <label>Período: A</label>
+            <input type="date">
+          </div>
+          <div class="field">
+            <label>Teléfono</label>
+            <input type="tel" placeholder="">
+          </div>
+          <div class="field">
+            <label>Domicilio</label>
+            <input type="text" placeholder="">
+          </div>
+          <div class="field">
+            <label>Puesto Inicial</label>
+            <input type="text" placeholder="">
+          </div>
+          <div class="field">
+            <label>Puesto Final</label>
+            <input type="text" placeholder="">
+          </div>
+          <div class="field span3">
+            <label>Actividades Desempeñadas</label>
+            <input type="text" placeholder="">
+          </div>
+          <div class="field">
+            <label>Sueldo Inicial</label>
+            <input type="text" placeholder="$">
+          </div>
+          <div class="field">
+            <label>Sueldo Final</label>
+            <input type="text" placeholder="$">
+          </div>
+          <div class="field">
+            <label>Motivo de Separación</label>
+            <input type="text" placeholder="">
+          </div>
+          <div class="field">
+            <label>Nombre del Jefe Inmediato</label>
+            <input type="text" placeholder="">
+          </div>
+          <div class="field">
+            <label>Puesto del Jefe Inmediato</label>
+            <input type="text" placeholder="">
+          </div>
+          <div class="field">
+            <label>¿Podemos solicitar informes?</label>
+            <div class="radio-group">
+              <label><input type="radio" name="informes1"> Sí</label>
+              <label><input type="radio" name="informes1"> No</label>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Empleo 2 -->
+      <div style="border:1px solid var(--line);border-radius:var(--radius);padding:16px 18px;margin-bottom:16px;">
+        <div style="font-size:9.5px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:var(--ink-soft);opacity:.6;margin-bottom:14px;">Empleo Anterior</div>
+        <div class="grid g3">
+          <div class="field span3">
+            <label>Nombre de la Compañía</label>
+            <input type="text" placeholder="">
+          </div>
+          <div class="field">
+            <label>Período: De</label>
+            <input type="date">
+          </div>
+          <div class="field">
+            <label>Período: A</label>
+            <input type="date">
+          </div>
+          <div class="field">
+            <label>Teléfono</label>
+            <input type="tel" placeholder="">
+          </div>
+          <div class="field">
+            <label>Puesto Inicial</label>
+            <input type="text" placeholder="">
+          </div>
+          <div class="field">
+            <label>Puesto Final</label>
+            <input type="text" placeholder="">
+          </div>
+          <div class="field">
+            <label>Motivo de Separación</label>
+            <input type="text" placeholder="">
+          </div>
+          <div class="field">
+            <label>Sueldo Inicial</label>
+            <input type="text" placeholder="$">
+          </div>
+          <div class="field">
+            <label>Sueldo Final</label>
+            <input type="text" placeholder="$">
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══ 8. REFERENCIAS PERSONALES ══ -->
+    <div class="section">
+      <div class="section-head">
+        <span class="section-num">08</span>
+        <span class="section-title">Referencias Personales</span>
+        <div class="section-line"></div>
+      </div>
+      <p class="notice">Por favor no incluya parientes o jefes anteriores.</p>
+      <table class="ftable" style="margin-top:12px;">
+        <thead>
+          <tr>
+            <th>Nombre</th>
+            <th>Domicilio</th>
+            <th>Teléfono</th>
+            <th>Ocupación</th>
+            <th style="width:100px;">Tiempo de conocerlo</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><input type="text" placeholder=""></td>
+            <td><input type="text" placeholder=""></td>
+            <td><input type="text" placeholder=""></td>
+            <td><input type="text" placeholder=""></td>
+            <td><input type="text" placeholder=""></td>
+          </tr>
+          <tr>
+            <td><input type="text" placeholder=""></td>
+            <td><input type="text" placeholder=""></td>
+            <td><input type="text" placeholder=""></td>
+            <td><input type="text" placeholder=""></td>
+            <td><input type="text" placeholder=""></td>
+          </tr>
+          <tr>
+            <td><input type="text" placeholder=""></td>
+            <td><input type="text" placeholder=""></td>
+            <td><input type="text" placeholder=""></td>
+            <td><input type="text" placeholder=""></td>
+            <td><input type="text" placeholder=""></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- ══ 9. DATOS GENERALES Y ECONÓMICOS ══ -->
+    <div class="section">
+      <div class="section-head">
+        <span class="section-num">09</span>
+        <span class="section-title">Datos Generales y Económicos</span>
+        <div class="section-line"></div>
+      </div>
+      <div class="grid g2">
+        <div class="field">
+          <label>¿Cómo se enteró de este empleo?</label>
+          <div class="radio-group">
+            <label><input type="radio" name="enterado"> Anuncio</label>
+            <label><input type="radio" name="enterado"> Otro medio</label>
+          </div>
+        </div>
+        <div class="field">
+          <label>¿Tiene otros ingresos? ¿Cuáles? Importe mensual</label>
+          <div class="radio-group" style="gap:10px;">
+            <label><input type="radio" name="otroingresos"> No</label>
+            <label><input type="radio" name="otroingresos"> Sí</label>
+            <input type="text" placeholder="Autónomo $50–70 USD" style="flex:1;margin:0;min-width:0;">
+          </div>
+        </div>
+        <div class="field">
+          <label>¿Tiene familiares o amigos en esta compañía?</label>
+          <div class="radio-group">
+            <label><input type="radio" name="familiar_emp"> No</label>
+            <label><input type="radio" name="familiar_emp"> Sí — Nombre:</label>
+            <input type="text" placeholder="" style="flex:1;margin:0;min-width:0;">
+          </div>
+        </div>
+        <div class="field">
+          <label>¿Su cónyuge trabaja? ¿Dónde? Percepción mensual</label>
+          <div class="radio-group">
+            <label><input type="radio" name="conyuge"> No</label>
+            <label><input type="radio" name="conyuge"> Sí</label>
+            <input type="text" placeholder="Empresa / $" style="flex:1;margin:0;min-width:0;">
+          </div>
+        </div>
+        <div class="field">
+          <label>¿Ha estado afianzado? Nombre de la compañía</label>
+          <div class="radio-group">
+            <label><input type="radio" name="afianzado"> No</label>
+            <label><input type="radio" name="afianzado"> Sí</label>
+            <input type="text" placeholder="" style="flex:1;margin:0;min-width:0;">
+          </div>
+        </div>
+        <div class="field">
+          <label>¿Vive en casa propia? Valor aproximado</label>
+          <div class="radio-group">
+            <label><input type="radio" name="casapropia"> No</label>
+            <label><input type="radio" name="casapropia"> Sí</label>
+            <input type="text" placeholder="$" style="flex:1;margin:0;min-width:0;">
+          </div>
+        </div>
+        <div class="field">
+          <label>¿Pertenece a algún sindicato? ¿A cuál?</label>
+          <div class="radio-group">
+            <label><input type="radio" name="sindicato"> No</label>
+            <label><input type="radio" name="sindicato"> Sí</label>
+            <input type="text" placeholder="" style="flex:1;margin:0;min-width:0;">
+          </div>
+        </div>
+        <div class="field">
+          <label>¿Paga renta? Renta mensual</label>
+          <div class="radio-group">
+            <label><input type="radio" name="renta"> No</label>
+            <label><input type="radio" name="renta"> Sí</label>
+            <input type="text" placeholder="$" style="flex:1;margin:0;min-width:0;">
+          </div>
+        </div>
+        <div class="field">
+          <label>¿Tiene seguro de vida? Nombre de la compañía</label>
+          <div class="radio-group">
+            <label><input type="radio" name="seguro"> No</label>
+            <label><input type="radio" name="seguro"> Sí</label>
+            <input type="text" placeholder="" style="flex:1;margin:0;min-width:0;">
+          </div>
+        </div>
+        <div class="field">
+          <label>¿Tiene automóvil propio? Placas / Marca / Modelo</label>
+          <div class="radio-group">
+            <label><input type="radio" name="auto"> No</label>
+            <label><input type="radio" name="auto"> Sí</label>
+            <input type="text" placeholder="" style="flex:1;margin:0;min-width:0;">
+          </div>
+        </div>
+        <div class="field">
+          <label>¿Puede viajar? Razones</label>
+          <div class="radio-group">
+            <label><input type="radio" name="viajar"> Sí</label>
+            <label><input type="radio" name="viajar"> No — </label>
+            <input type="text" placeholder="Estudio y familia" style="flex:1;margin:0;min-width:0;">
+          </div>
+        </div>
+        <div class="field">
+          <label>¿Tiene deudas? ¿De qué clase? Importe</label>
+          <div class="radio-group">
+            <label><input type="radio" name="deudas"> No</label>
+            <label><input type="radio" name="deudas"> Sí</label>
+            <input type="text" placeholder="$" style="flex:1;margin:0;min-width:0;">
+          </div>
+        </div>
+        <div class="field">
+          <label>¿Dispuesto a cambiar su lugar de residencia?</label>
+          <div class="radio-group">
+            <label><input type="radio" name="residencia"> Sí</label>
+            <label><input type="radio" name="residencia"> No — </label>
+            <input type="text" placeholder="Razones personales" style="flex:1;margin:0;min-width:0;">
+          </div>
+        </div>
+        <div class="field">
+          <label>¿Cuánto abona mensualmente?</label>
+          <input type="text" placeholder="$">
+        </div>
+
+        <!-- Gastos mensuales -->
+        <div class="field">
+          <label>¿A cuánto ascienden sus gastos mensuales? — Ingresos</label>
+          <input type="text" placeholder="$">
+        </div>
+        <div class="field">
+          <label>Egresos</label>
+          <input type="text" placeholder="$">
+        </div>
+        <div class="field">
+          <label>Ahorros</label>
+          <input type="text" placeholder="$">
+        </div>
+        <div class="field">
+          <label>Total</label>
+          <input type="text" placeholder="$">
+        </div>
+        <div class="field span2">
+          <label>¿En qué fecha podría presentarse a trabajar?</label>
+          <input type="date">
+        </div>
+      </div>
+    </div>
+
+    <!-- ══ 10. FIRMA ══ -->
+    <div class="section">
+      <div class="section-head">
+        <span class="section-num">10</span>
+        <span class="section-title">Firma del Solicitante</span>
+        <div class="section-line"></div>
+      </div>
+      <div class="grid g2">
+        <div class="field">
+          <label>Observaciones del Entrevistador</label>
+          <textarea placeholder="" style="min-height:90px;"></textarea>
+        </div>
+        <div class="sig-wrap">
+          <label style="font-size:9.5px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:var(--ink-soft);opacity:.7;">Firma del Solicitante</label>
+          <div class="sig-canvas-wrap">
+            <canvas id="sigCanvas" height="78"></canvas>
+            <button class="sig-clear" onclick="clearSig()">Limpiar</button>
+          </div>
+          <span style="font-size:10.5px;color:var(--ink-soft);opacity:.6;margin-top:3px;">Firme con el mouse o toque la pantalla</span>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /body -->
+
+  <!-- ══ FOOTER ══ -->
+  <div class="footer">
+    <p class="legal">
+      <strong>Aviso de privacidad:</strong> Todos los datos aquí proporcionados serán tratados conforme a la <em>Ley Federal de Protección de Datos Personales en Posesión de los Particulares</em>. Al firmar y enviar esta solicitud, hago constar que la información proporcionada es verdadera y autorizo a la compañía a verificarla.
+    </p>
+    <button class="btn-submit" onclick="window.print()">⬡ Imprimir / Guardar</button>
+  </div>
+
+</form>
+
+<script>
+// ── Auto fecha ──
+document.getElementById('fechaSolicitud').valueAsDate = new Date();
+
+// ── Foto preview ──
+function previewPhoto(e) {
+  const file = e.target.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = ev => {
+    const img = document.getElementById('photoPreview');
+    img.src = ev.target.result;
+    img.style.display = 'block';
+    document.getElementById('photoLabel').style.display = 'none';
+    document.querySelector('.photo-box svg').style.display = 'none';
+  };
+  reader.readAsDataURL(file);
+}
+
+// ── Signature pad ──
+const canvas = document.getElementById('sigCanvas');
+const ctx = canvas.getContext('2d');
+let drawing = false, lastX = 0, lastY = 0;
+
+function resizeCanvas() {
+  const w = canvas.parentElement.clientWidth;
+  canvas.width = w;
+  canvas.height = 78;
+}
+resizeCanvas();
+window.addEventListener('resize', resizeCanvas);
+
+function getPos(e) {
+  const r = canvas.getBoundingClientRect();
+  if (e.touches) return { x: e.touches[0].clientX - r.left, y: e.touches[0].clientY - r.top };
+  return { x: e.clientX - r.left, y: e.clientY - r.top };
+}
+
+canvas.addEventListener('mousedown', e => { drawing = true; const p = getPos(e); lastX = p.x; lastY = p.y; });
+canvas.addEventListener('touchstart', e => { e.preventDefault(); drawing = true; const p = getPos(e); lastX = p.x; lastY = p.y; }, { passive: false });
+canvas.addEventListener('mousemove', draw);
+canvas.addEventListener('touchmove', e => { e.preventDefault(); draw(e); }, { passive: false });
+canvas.addEventListener('mouseup', () => drawing = false);
+canvas.addEventListener('touchend', () => drawing = false);
+canvas.addEventListener('mouseleave', () => drawing = false);
+
+function draw(e) {
+  if (!drawing) return;
+  const p = getPos(e);
+  ctx.beginPath();
+  ctx.moveTo(lastX, lastY);
+  ctx.lineTo(p.x, p.y);
+  ctx.strokeStyle = '#1a1a2e';
+  ctx.lineWidth = 1.8;
+  ctx.lineCap = 'round';
+  ctx.lineJoin = 'round';
+  ctx.stroke();
+  lastX = p.x; lastY = p.y;
+}
+
+function clearSig() {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+}
+</script>
+</body>
+</html>
