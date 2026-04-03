@@ -1,0 +1,692 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CV — Carlos Espinosa</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@300;400&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --bg:       #0d0f14;
+  --bg2:      #131620;
+  --bg3:      #1a1e2b;
+  --line:     #252a38;
+  --accent:   #4af0c4;
+  --accent2:  #7b6ff0;
+  --muted:    #586070;
+  --soft:     #8a94a8;
+  --text:     #dde2ef;
+  --white:    #f0f4ff;
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: 'Syne', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ─── ANIMATED GRID BG ─── */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(74,240,196,.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(74,240,196,.03) 1px, transparent 1px);
+  background-size: 48px 48px;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.wrap {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 0 28px 80px;
+  position: relative;
+  z-index: 1;
+}
+
+/* ─── HEADER ─── */
+header {
+  padding: 72px 0 56px;
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 32px;
+  align-items: end;
+  border-bottom: 1px solid var(--line);
+  animation: fadeUp .7s ease both;
+}
+
+.name-block {}
+.eyebrow {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  font-weight: 300;
+  letter-spacing: 4px;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 16px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.eyebrow::before {
+  content: '';
+  display: block;
+  width: 32px;
+  height: 1px;
+  background: var(--accent);
+  opacity: .6;
+}
+
+h1 {
+  font-family: 'Instrument Serif', serif;
+  font-size: clamp(46px, 7vw, 80px);
+  font-weight: 400;
+  line-height: .95;
+  color: var(--white);
+  letter-spacing: -2px;
+}
+h1 em {
+  font-style: italic;
+  color: var(--accent);
+}
+
+.contact-block {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  align-items: flex-end;
+  padding-bottom: 6px;
+}
+.contact-item {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12px;
+  font-weight: 300;
+  color: var(--soft);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  text-decoration: none;
+  transition: color .2s;
+}
+.contact-item:hover { color: var(--accent); }
+.contact-item .dot {
+  width: 5px; height: 5px;
+  border-radius: 50%;
+  background: var(--accent);
+  flex-shrink: 0;
+  opacity: .5;
+}
+
+/* ─── LAYOUT ─── */
+.cv-body {
+  display: grid;
+  grid-template-columns: 1fr 280px;
+  gap: 0 48px;
+  margin-top: 56px;
+}
+
+/* ─── SECTION ─── */
+.section {
+  margin-bottom: 52px;
+  animation: fadeUp .6s ease both;
+}
+.section:nth-child(1) { animation-delay: .1s; }
+.section:nth-child(2) { animation-delay: .2s; }
+.section:nth-child(3) { animation-delay: .3s; }
+.section:nth-child(4) { animation-delay: .4s; }
+
+.sec-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  font-weight: 400;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: var(--accent2);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 24px;
+}
+.sec-label::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(to right, var(--line), transparent);
+}
+
+h2 {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--white);
+  letter-spacing: .5px;
+  text-transform: uppercase;
+  margin-bottom: 14px;
+}
+
+/* ─── PERFIL ─── */
+.perfil-text {
+  font-size: 15px;
+  line-height: 1.75;
+  color: var(--soft);
+  font-weight: 400;
+  border-left: 2px solid var(--accent);
+  padding-left: 20px;
+}
+.perfil-text strong { color: var(--text); font-weight: 500; }
+
+/* ─── HABILIDADES ─── */
+.skill-group { margin-bottom: 28px; }
+.skill-group-title {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 12px;
+  opacity: .8;
+}
+.skill-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.skill-item {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  font-size: 13.5px;
+  color: var(--text);
+  line-height: 1.4;
+}
+.skill-item::before {
+  content: '→';
+  color: var(--accent);
+  font-size: 11px;
+  flex-shrink: 0;
+  opacity: .6;
+  font-family: 'JetBrains Mono', monospace;
+}
+
+/* ─── EXPERIENCIA ─── */
+.exp-card {
+  background: var(--bg2);
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  padding: 22px 24px;
+  position: relative;
+  overflow: hidden;
+  margin-bottom: 16px;
+  transition: border-color .2s;
+}
+.exp-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0;
+  width: 3px;
+  height: 100%;
+  background: linear-gradient(to bottom, var(--accent), var(--accent2));
+}
+.exp-card:hover { border-color: rgba(74,240,196,.25); }
+
+.exp-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 12px;
+  margin-bottom: 10px;
+}
+.exp-title {
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--white);
+  letter-spacing: -.2px;
+}
+.exp-company {
+  font-size: 13px;
+  color: var(--accent);
+  font-weight: 500;
+  margin-top: 2px;
+}
+.exp-period {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  color: var(--muted);
+  white-space: nowrap;
+  padding-top: 3px;
+}
+.exp-items {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+  margin-top: 12px;
+}
+.exp-items li {
+  font-size: 13.5px;
+  color: var(--soft);
+  line-height: 1.5;
+  padding-left: 16px;
+  position: relative;
+}
+.exp-items li::before {
+  content: '·';
+  position: absolute;
+  left: 4px;
+  color: var(--accent);
+  font-size: 18px;
+  line-height: 1;
+  top: 2px;
+}
+
+/* ─── OBJETIVO ─── */
+.objetivo-box {
+  background: linear-gradient(135deg, rgba(74,240,196,.06), rgba(123,111,240,.06));
+  border: 1px solid rgba(74,240,196,.15);
+  border-radius: 6px;
+  padding: 22px 24px;
+  font-size: 14px;
+  color: var(--soft);
+  line-height: 1.7;
+}
+
+/* ─── SIDEBAR ─── */
+.sidebar .section { animation-delay: .25s; }
+
+/* ─── SIDEBAR SKILLS ─── */
+.tag-cloud { display: flex; flex-wrap: wrap; gap: 8px; }
+.tag {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  font-weight: 400;
+  padding: 5px 11px;
+  border-radius: 100px;
+  border: 1px solid var(--line);
+  color: var(--soft);
+  background: var(--bg2);
+  transition: all .2s;
+  cursor: default;
+  white-space: nowrap;
+}
+.tag:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+  background: rgba(74,240,196,.06);
+}
+.tag.hi {
+  border-color: rgba(74,240,196,.35);
+  color: var(--accent);
+  background: rgba(74,240,196,.07);
+}
+
+/* ─── FORTALEZAS ─── */
+.strength-list { display: flex; flex-direction: column; gap: 10px; }
+.strength-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 13.5px;
+  color: var(--soft);
+}
+.strength-icon {
+  width: 30px; height: 30px;
+  border-radius: 8px;
+  background: var(--bg3);
+  border: 1px solid var(--line);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  flex-shrink: 0;
+}
+
+/* ─── DISPONIBILIDAD ─── */
+.avail-list { display: flex; flex-direction: column; gap: 10px; }
+.avail-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 13px;
+  color: var(--soft);
+  line-height: 1.4;
+}
+.avail-dot {
+  width: 7px; height: 7px;
+  border-radius: 50%;
+  background: var(--accent);
+  flex-shrink: 0;
+  box-shadow: 0 0 8px var(--accent);
+}
+
+/* ─── EDUCACIÓN ─── */
+.edu-item {
+  padding: 14px 0;
+  border-bottom: 1px solid var(--line);
+}
+.edu-item:last-child { border-bottom: none; }
+.edu-level {
+  font-size: 11px;
+  font-family: 'JetBrains Mono', monospace;
+  color: var(--accent2);
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  margin-bottom: 4px;
+}
+.edu-name {
+  font-size: 13.5px;
+  font-weight: 600;
+  color: var(--text);
+  margin-bottom: 2px;
+}
+.edu-meta {
+  font-size: 11.5px;
+  color: var(--muted);
+  font-family: 'JetBrains Mono', monospace;
+}
+
+/* ─── PRINT BUTTON ─── */
+.print-btn {
+  position: fixed;
+  bottom: 28px;
+  right: 28px;
+  background: var(--accent);
+  color: var(--bg);
+  font-family: 'Syne', sans-serif;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  border: none;
+  border-radius: 100px;
+  padding: 12px 24px;
+  cursor: pointer;
+  transition: all .2s;
+  box-shadow: 0 4px 24px rgba(74,240,196,.3);
+  z-index: 100;
+}
+.print-btn:hover {
+  background: var(--white);
+  box-shadow: 0 6px 32px rgba(74,240,196,.5);
+  transform: translateY(-2px);
+}
+
+/* ─── ANIMATIONS ─── */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(18px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ─── RESPONSIVE ─── */
+@media (max-width: 680px) {
+  header { grid-template-columns: 1fr; gap: 24px; }
+  .contact-block { align-items: flex-start; }
+  .cv-body { grid-template-columns: 1fr; }
+  .sidebar { border-top: 1px solid var(--line); padding-top: 40px; }
+}
+
+/* ─── PRINT ─── */
+@media print {
+  body { background: white; color: #1a1a1a; }
+  body::before { display: none; }
+  .print-btn { display: none; }
+  :root {
+    --bg: white; --bg2: #f8f8f8; --bg3: #f0f0f0;
+    --text: #1a1a1a; --white: #000; --soft: #444;
+    --accent: #0d7a5f; --accent2: #4a3fbf; --muted: #888;
+    --line: #ddd;
+  }
+}
+</style>
+</head>
+<body>
+
+<div class="wrap">
+
+  <!-- ══ HEADER ══ -->
+  <header>
+    <div class="name-block">
+      <div class="eyebrow">Currículum Vitae</div>
+      <h1>Carlos<br><em>Espinosa</em></h1>
+    </div>
+    <div class="contact-block">
+      <a class="contact-item" href="tel:+529619194533">
+        <span class="dot"></span>
+        +52 961 919 4533
+      </a>
+      <a class="contact-item" href="mailto:educarlosespinosa@gmail.com">
+        <span class="dot"></span>
+        educarlosespinosa@gmail.com
+      </a>
+      <span class="contact-item">
+        <span class="dot"></span>
+        Venustiano Carranza, Chiapas
+      </span>
+    </div>
+  </header>
+
+  <div class="cv-body">
+
+    <!-- ══ COLUMNA PRINCIPAL ══ -->
+    <main>
+
+      <!-- Perfil -->
+      <div class="section">
+        <div class="sec-label">Perfil Profesional</div>
+        <p class="perfil-text">
+          Técnico en Tecnologías de la Información con enfoque en <strong>soporte, administración de sistemas y soluciones prácticas</strong>. Experiencia en mantenimiento de equipos, instalación de sistemas operativos, gestión de redes y despliegue de servicios en entornos Linux. Capacidad para resolver incidencias de forma eficiente y <strong>automatizar procesos</strong>. Orientado a mantener la operación tecnológica estable en entornos empresariales en crecimiento.
+        </p>
+      </div>
+
+      <!-- Habilidades técnicas -->
+      <div class="section">
+        <div class="sec-label">Habilidades Técnicas</div>
+
+        <div class="skill-group">
+          <div class="skill-group-title">Soporte y Sistemas</div>
+          <div class="skill-list">
+            <div class="skill-item">Instalación y configuración de Windows y distribuciones Linux</div>
+            <div class="skill-item">Formateo y mantenimiento de PCs, HDD/SSD y dispositivos externos</div>
+            <div class="skill-item">Recuperación de archivos y gestión de respaldos (backups)</div>
+            <div class="skill-item">Diagnóstico y solución de fallas de hardware y software</div>
+            <div class="skill-item">Gestión de permisos y configuración de servicios</div>
+          </div>
+        </div>
+
+        <div class="skill-group">
+          <div class="skill-group-title">Redes y Seguridad</div>
+          <div class="skill-list">
+            <div class="skill-item">Configuración básica de redes, routers y conectividad</div>
+            <div class="skill-item">Escaneo de redes y puertos (Nmap)</div>
+            <div class="skill-item">Monitoreo de tráfico de red (Wireshark)</div>
+            <div class="skill-item">Configuración de firewall</div>
+            <div class="skill-item">Auditoría básica de seguridad (Lynis, Auditd, OpenVAS)</div>
+          </div>
+        </div>
+
+        <div class="skill-group">
+          <div class="skill-group-title">Servidores y Virtualización</div>
+          <div class="skill-list">
+            <div class="skill-item">Implementación de servidores con Ubuntu Server</div>
+            <div class="skill-item">Virtualización con Proxmox</div>
+            <div class="skill-item">Contenedores con Docker y Docker Compose</div>
+            <div class="skill-item">Configuración de acceso remoto (RustDesk)</div>
+          </div>
+        </div>
+
+        <div class="skill-group">
+          <div class="skill-group-title">Automatización y Bases de Datos</div>
+          <div class="skill-list">
+            <div class="skill-item">Automatización de flujos de trabajo con n8n y Make</div>
+            <div class="skill-item">Conocimientos básicos de MySQL y phpMyAdmin</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Experiencia / Proyectos -->
+      <div class="section">
+        <div class="sec-label">Experiencia / Proyectos Relevantes</div>
+
+        <div class="exp-card">
+          <div class="exp-header">
+            <div>
+              <div class="exp-title">Empleado de Ventas</div>
+              <div class="exp-company">First Cash</div>
+            </div>
+            <div class="exp-period">Jun 2022 → May 2023</div>
+          </div>
+          <ul class="exp-items">
+            <li>Administración y ventas en el punto de venta</li>
+            <li>Gestión de caja y atención a clientes</li>
+            <li>Operación de sistemas POS y adaptación a software administrativo</li>
+          </ul>
+        </div>
+
+        <div class="exp-card">
+          <div class="exp-header">
+            <div>
+              <div class="exp-title">Proyectos Personales en TI</div>
+              <div class="exp-company">Iniciativa Propia</div>
+            </div>
+            <div class="exp-period">Continuo</div>
+          </div>
+          <ul class="exp-items">
+            <li>Configuración de servidores Linux para servicios y acceso remoto</li>
+            <li>Implementación de contenedores para despliegue de aplicaciones</li>
+            <li>Automatización de tareas digitales</li>
+            <li>Desarrollo básico de sitios web</li>
+            <li>Gestión y optimización de entornos digitales</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Objetivo -->
+      <div class="section">
+        <div class="sec-label">Objetivo Profesional</div>
+        <div class="objetivo-box">
+          Desarrollarme en el área de TI aportando soluciones eficientes en soporte, sistemas y redes, contribuyendo a la estabilidad y crecimiento tecnológico de la empresa.
+        </div>
+      </div>
+
+    </main>
+
+    <!-- ══ SIDEBAR ══ -->
+    <aside class="sidebar">
+
+      <!-- Stack tecnológico -->
+      <div class="section">
+        <div class="sec-label">Stack</div>
+        <div class="tag-cloud">
+          <span class="tag hi">Linux</span>
+          <span class="tag hi">Docker</span>
+          <span class="tag hi">Proxmox</span>
+          <span class="tag">Ubuntu Server</span>
+          <span class="tag">n8n</span>
+          <span class="tag">Make</span>
+          <span class="tag hi">Nmap</span>
+          <span class="tag">Wireshark</span>
+          <span class="tag">MySQL</span>
+          <span class="tag">phpMyAdmin</span>
+          <span class="tag">RustDesk</span>
+          <span class="tag">HTML/CSS</span>
+          <span class="tag">JavaScript</span>
+          <span class="tag">Photoshop</span>
+          <span class="tag">Excel</span>
+          <span class="tag">Windows</span>
+        </div>
+      </div>
+
+      <!-- Educación -->
+      <div class="section">
+        <div class="sec-label">Educación</div>
+
+        <div class="edu-item">
+          <div class="edu-level">Lic. en curso</div>
+          <div class="edu-name">Contaduría Pública y Comercial</div>
+          <div class="edu-meta">SUAT — 2020–2023 · Pendiente</div>
+        </div>
+        <div class="edu-item">
+          <div class="edu-level">En curso</div>
+          <div class="edu-name">PT-B en Informática — Grado 4</div>
+          <div class="edu-meta">Conalep · 7:06–14:00 hrs</div>
+        </div>
+        <div class="edu-item">
+          <div class="edu-level">Preparatoria</div>
+          <div class="edu-name">Colegio de Bachilleres de Chiapas</div>
+          <div class="edu-meta">2016–2019 · Certificado</div>
+        </div>
+        <div class="edu-item">
+          <div class="edu-level">Secundaria</div>
+          <div class="edu-name">E.S.T. N° 4</div>
+          <div class="edu-meta">2012–2015 · Certificado</div>
+        </div>
+        <div class="edu-item">
+          <div class="edu-level">Primaria</div>
+          <div class="edu-name">Escuela Primaria del Estado</div>
+          <div class="edu-meta">2006–2012 · Certificado</div>
+        </div>
+      </div>
+
+      <!-- Idiomas -->
+      <div class="section">
+        <div class="sec-label">Idiomas</div>
+        <div style="display:flex;flex-direction:column;gap:12px;">
+          <div>
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;">
+              <span style="font-size:13px;color:var(--text);font-weight:600;">Español</span>
+              <span style="font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--accent);">Nativo</span>
+            </div>
+            <div style="height:3px;background:var(--line);border-radius:2px;">
+              <div style="width:100%;height:100%;background:linear-gradient(to right,var(--accent),var(--accent2));border-radius:2px;"></div>
+            </div>
+          </div>
+          <div>
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;">
+              <span style="font-size:13px;color:var(--text);font-weight:600;">Inglés</span>
+              <span style="font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--accent2);">Nivel A2</span>
+            </div>
+            <div style="height:3px;background:var(--line);border-radius:2px;">
+              <div style="width:30%;height:100%;background:linear-gradient(to right,var(--accent2),rgba(123,111,240,.3));border-radius:2px;"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Fortalezas -->
+      <div class="section">
+        <div class="sec-label">Fortalezas</div>
+        <div class="strength-list">
+          <div class="strength-item"><div class="strength-icon">🔍</div> Resolución de problemas técnicos</div>
+          <div class="strength-item"><div class="strength-icon">🧠</div> Pensamiento lógico</div>
+          <div class="strength-item"><div class="strength-icon">📖</div> Aprendizaje autodidacta</div>
+          <div class="strength-item"><div class="strength-icon">🔄</div> Adaptabilidad</div>
+          <div class="strength-item"><div class="strength-icon">⚡</div> Proactividad</div>
+        </div>
+      </div>
+
+      <!-- Disponibilidad -->
+      <div class="section">
+        <div class="sec-label">Disponibilidad</div>
+        <div class="avail-list">
+          <div class="avail-item"><div class="avail-dot"></div> Disponibilidad inmediata</div>
+          <div class="avail-item"><div class="avail-dot"></div> Traslado entre sucursales</div>
+          <div class="avail-item"><div class="avail-dot"></div> Aprender nuevas tecnologías</div>
+          <div class="avail-item"><div class="avail-dot"></div> Crecimiento en área de TI</div>
+        </div>
+      </div>
+
+    </aside>
+
+  </div><!-- /cv-body -->
+</div><!-- /wrap -->
+
+<button class="print-btn" onclick="window.print()">↓ Guardar PDF</button>
+
+</body>
+</html>
